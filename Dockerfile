@@ -12,7 +12,7 @@ MAINTAINER Alkacon Software GmbH
 ENV APP_HOME=/home/app/
 RUN mkdir -p ${APP_HOME}
 
-RUN groupadd -r app && useradd -r -g app -d ${APP_HOME} -s /sbin/nologin -c "Docker image user" app && chown -R app:app ${APP_HOME}
+RUN groupadd -r app && useradd -r -g app -d ${APP_HOME} -s /sbin/nologin -c "Docker user" app && chown -R app:app ${APP_HOME}
 
 # Variables used in the shell scripts loaded from the file system
 ENV TOMCAT_HOME=/usr/local/tomcat
@@ -49,17 +49,17 @@ RUN \
 # Create the setup configuration file
 COPY resources ${APP_HOME}
 
-RUN mkdir -p ${APP_HOME}data/ && chown -R app:app ${APP_HOME}data/
-
-VOLUME  ${APP_HOME}data/
-
-RUN chmod +x ${APP_HOME}root/*.sh && chown -R app:app ${APP_HOME} && chown -R app:app /usr/local/tomcat/ && chown -R app:app /etc/timezone
-
+RUN chmod +x ${APP_HOME}root/*.sh && \
+    chown -R app:app ${APP_HOME} && \
+    chown -R app:app ${TOMCAT_HOME} && \
+    chown -R app:app /etc/timezone 
+ 
 USER app
+ 
+VOLUME ${WEBAPPS_HOME}
 
 RUN bash ${APP_HOME}root/opencms-fetch.sh && \
     rm -rf ${WEBAPPS_HOME}/*
-    
 
 
 # Expose port 8080 for Tomcat and define the startup script

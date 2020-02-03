@@ -9,18 +9,6 @@ JAR_NAMES_PROPERTIES="OPENCMS_CORE_LIBS=$JAR_NAMES"
 JAR_NAMES_PROPERTIES_FILE=${ARTIFACTS_FOLDER}libs/core-libs.properties
 echo "$JAR_NAMES_PROPERTIES" > $JAR_NAMES_PROPERTIES_FILE
 
-echo "make dir"
-mkdir -p ${OPENCMS_HOME}/WEB-INF/lib/
-echo "---- lib"
-mkdir -p ${OPENCMS_HOME}/WEB-INF/config/
-echo "---- config"
-
-echo "link to volume"
-ln -s ${OPENCMS_HOME}/WEB-INF/lib/ ${APP_HOME}data/
-echo "---- lib"
-ln -s ${OPENCMS_HOME}/WEB-INF/config/ ${APP_HOME}data/
-echo "---- config"
-
 if [ -f "${OPENCMS_HOME}/WEB-INF/lib/opencms.jar" ]
 then
 	echo "OpenCms already installed, updating modules and libs"
@@ -89,6 +77,11 @@ else
 	if [ ! -d ${OPENCMS_HOME} ]; then
 		mkdir -v -p ${OPENCMS_HOME}
 	fi
+	
+	echo "--------------------------"
+	echo "ls ${OPENCMS_HOME}"
+	ls -la ${OPENCMS_HOME}
+	echo "--------------------------"
 
 	echo "Unzip the .war"
 	unzip -q -d ${OPENCMS_HOME} ${ARTIFACTS_FOLDER}opencms.war

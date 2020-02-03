@@ -38,12 +38,18 @@ read -r -d '' REPLACE_WEBXML << EOM
 
 EOM
 
-echo "${REPLACE_WEBXML}" > "${CONFIG_TMPFILE}" 
 
-sed -i "/<display-name>OpenCms<\/display-name>/ r ${CONFIG_TMPFILE}" "${CONFIG_WEBXML}"
+#!/bin/bash
+if grep -q 'ExpiresFilter' ${CONFIG_WEBXML}; then 
+    echo "Expires filter found." 
+else 
+    echo "${REPLACE_WEBXML}" > "${CONFIG_TMPFILE}" 
 
-echo ""
-echo "Modified web.xml configuration looks like this:" 
-echo "================================================================================================="
-cat "${CONFIG_WEBXML}"
-echo ""
+    sed -i "/<display-name>OpenCms<\/display-name>/ r ${CONFIG_TMPFILE}" "${CONFIG_WEBXML}"
+
+    echo ""
+    echo "Modified web.xml configuration looks like this:" 
+    echo "================================================================================================="
+    cat "${CONFIG_WEBXML}"
+    echo ""
+fi
