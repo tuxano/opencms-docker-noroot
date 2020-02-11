@@ -36,7 +36,7 @@ then
 	cp -f -v ${OPENCMS_HOME}/WEB-INF/config/opencms-modules.xml ${OPENCMS_HOME}/WEB-INF/config/backups/opencms-modules-preinst.xml
 	
 	echo "Updating config files with the version from the OpenCms WAR"
-	unzip -q -d ${OPENCMS_HOME} ${ARTIFACTS_FOLDER}opencms.war WEB-INF/packages/modules/*.zip WEB-INF/lib/*.jar
+	unzip -q -o -d ${OPENCMS_HOME} ${ARTIFACTS_FOLDER}opencms.war WEB-INF/packages/modules/*.zip WEB-INF/lib/*.jar
 	IFS=',' read -r -a FILES <<< "$UPDATE_CONFIG_FILES"
 	for FILENAME in ${FILES[@]}
 	do
@@ -45,7 +45,7 @@ then
 			rm -rf "${OPENCMS_HOME}${FILENAME}"
 		fi
 		echo "Moving file from \"${ARTIFACTS_FOLDER}TEMP/${FILENAME}\" to \"${OPENCMS_HOME}${FILENAME}\" ..."
-		mv "${ARTIFACTS_FOLDER}TEMP/${FILENAME}" "${OPENCMS_HOME}${FILENAME}"
+		mv "${ARTIFACTS_FOLDER}TEMP/${FILENAME}" "${OPENCMS_HOME}/${FILENAME}"
 	done
 
 	echo "Updating OpenCms core JARs"
