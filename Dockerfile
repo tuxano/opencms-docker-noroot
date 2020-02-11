@@ -14,7 +14,7 @@ ENV APP_USER=app
 ENV APP_GROUP=app
 RUN mkdir -p ${APP_HOME}
 
-RUN groupadd -r ${APP_GROUP} && useradd -r -g ${APP_GROUP} -d ${APP_HOME} -s /sbin/nologin -c "Docker user" ${APP_USER}
+RUN groupadd -r ${APP_GROUP} && useradd -r -g ${APP_GROUP} -d ${APP_HOME} -s /sbin/nologin -c "Docker User" ${APP_USER} && chown -R ${APP_USER}:${APP_USER} ${APP_HOME}
 
 # Variables used in the shell scripts loaded from the file system
 ENV TOMCAT_HOME=/usr/local/tomcat
@@ -52,11 +52,13 @@ RUN \
 COPY resources ${APP_HOME}
 
 RUN chmod +x ${APP_HOME}root/*.sh && \
-    chown -R ${APP_USER}:0 ${APP_HOME} && \
-    chown -R ${APP_USER}:0 ${TOMCAT_HOME} && \
-    chown -R ${APP_USER}:0 /etc/timezone 
+    chown -R 1001:0 ${TOMCAT_HOME} && \
+    chown -R 1001:0 ${APP_HOME} && \
+    chmod -R g+rw ${TOMCAT_HOME} && \
+    chmod -R g+rw ${APP_HOME} && \
+    chown -R 1001:0 /etc/timezone 
  
-USER ${APP_USER}
+USER 1001
  
 VOLUME ${WEBAPPS_HOME}
 
