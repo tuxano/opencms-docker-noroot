@@ -10,9 +10,11 @@ MAINTAINER Alkacon Software GmbH
 # docker run -d -p 80:8080 -p 22000:22 alkacon/opencms-docker:9.5.3-simple
 #
 ENV APP_HOME=/home/app/
+ENV APP_USER=app
+ENV APP_GROUP=app
 RUN mkdir -p ${APP_HOME}
 
-RUN groupadd -r app && useradd -r -g app -d ${APP_HOME} -s /sbin/nologin -c "Docker user" app && chown -R app:app ${APP_HOME}
+RUN groupadd -r ${APP_GROUP} && useradd -r -g ${APP_USER} -d ${APP_HOME} -s /sbin/nologin -c "Docker user" ${APP_USER}
 
 # Variables used in the shell scripts loaded from the file system
 ENV TOMCAT_HOME=/usr/local/tomcat
@@ -50,11 +52,11 @@ RUN \
 COPY resources ${APP_HOME}
 
 RUN chmod +x ${APP_HOME}root/*.sh && \
-    chown -R app:app ${APP_HOME} && \
-    chown -R app:app ${TOMCAT_HOME} && \
-    chown -R app:app /etc/timezone 
+    chown -R ${APP_USER}:0 ${APP_HOME} && \
+    chown -R ${APP_USER}:0 ${TOMCAT_HOME} && \
+    chown -R ${APP_USER}:0 /etc/timezone 
  
-USER app
+USER ${APP_USER}
  
 VOLUME ${WEBAPPS_HOME}
 
