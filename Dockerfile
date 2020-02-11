@@ -14,7 +14,7 @@ ENV APP_USER=app
 ENV APP_GROUP=app
 RUN mkdir -p ${APP_HOME}
 
-RUN groupadd -r ${APP_GROUP} && useradd -r -g ${APP_USER} -d ${APP_HOME} -s /sbin/nologin -c "Docker user" ${APP_USER}
+RUN groupadd -r ${APP_GROUP} && useradd -r -g ${APP_GROUP} -d ${APP_HOME} -s /sbin/nologin -c "Docker user" ${APP_USER}
 
 # Variables used in the shell scripts loaded from the file system
 ENV TOMCAT_HOME=/usr/local/tomcat
