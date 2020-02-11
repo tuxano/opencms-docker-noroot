@@ -63,7 +63,6 @@ VOLUME ${WEBAPPS_HOME}
 RUN bash ${APP_HOME}root/opencms-fetch.sh && \
     rm -rf ${WEBAPPS_HOME}/*
 
-
 # Expose port 8080 for Tomcat and define the startup script
 EXPOSE 8080
 
